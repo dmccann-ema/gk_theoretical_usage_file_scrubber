@@ -12,12 +12,17 @@ def scrub_excel_file(excel_file_path):
         exit()
 
     df.columns = df.iloc[3]
+    
+    df['Sold'] = pd.to_numeric(df['Sold'], errors='coerce', downcast='float')
+    df['Use Each'] = pd.to_numeric(df['Use Each'], errors='coerce')
+    df['Use Total'] = pd.to_numeric(df['Use Total'], errors='coerce')
+    
     df = df[4:]
     
-    first_col = df.iloc[:, 0]
-    unit_col = df.iloc[:, 7]
-    sold_col = df.iloc[:, 10]
-    use_col = df.iloc[:, 15]
+    first_col = df['Menu Item Name']
+    unit_col = df['Unit']
+    sold_col = df['Sold']
+    use_col = df['Use Each']
 
     cleaned_df = df[
         first_col.notna() & 
