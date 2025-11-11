@@ -25,7 +25,7 @@ def scrub_excel_file(excel_file_path):
         unit_col.notna() & 
         sold_col.notna() & 
         use_col.notna()
-    ]
+    ].dropna(axis='columns', how='all')
 
     file_path_parts = excel_file_path.split('.')
 
