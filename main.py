@@ -1,6 +1,7 @@
-from tkinter import filedialog
-
 import pandas as pd
+from tkinter import filedialog
+from openpyxl.styles import Alignment
+from openpyxl.utils import get_column_letter
 
 def scrub_excel_file(excel_file_path):
     # Read the Excel file into a pandas DataFrame
@@ -31,8 +32,25 @@ def scrub_excel_file(excel_file_path):
 
     excel_file_path_scrubbed = '.'.join(file_path_parts[:-1] + ['scrubbed', file_path_parts[-1]])
 
-    cleaned_df.to_excel(excel_file_path_scrubbed, index=False, engine='openpyxl')
-    
+    with pd.ExcelWriter(excel_file_path_scrubbed, engine='openpyxl') as writer:
+        cleaned_df.to_excel(writer, sheet_name='Sheet1', index=False)
+
+        # Grab the worksheet object
+        ws = writer.sheets['Sheet1']
+
+        # ---- Left‑align **only** the header row (row 1) ----
+        for col_num in range(1, len(cleaned_df.columns) + 1):
+            cell = ws.cell(row=1, column=col_num)
+            cell.alignment = Alignment(horizontal='left')
+
+        # (Optional) Auto‑size columns so you can see the effect
+        for i, col in enumerate(cleaned_df.columns, start=1):
+            col_letter = get_column_letter(i)
+            max_len = max(
+                len(str(s)) for s in cleaned_df[col]
+            ) + 2                     # a little padding
+            ws.column_dimensions[col_letter].width = max_len
+        
     return excel_file_path_scrubbed
 
 
