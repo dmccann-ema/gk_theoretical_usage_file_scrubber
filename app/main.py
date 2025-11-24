@@ -3,7 +3,7 @@ from tkinter import filedialog
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 
-import popup
+from .popup import start_loading
 
 
 def scrub_excel_file(excel_file_path):
@@ -63,7 +63,7 @@ def scrub_excel_file(excel_file_path):
 
 
 def select_file():
-    return popup.start_loading(
+    return start_loading(
         lambda: filedialog.askopenfilename(
             title = "Select a file",
             filetypes = [("Excel files", "*.xls?"),]
@@ -74,7 +74,7 @@ def select_file():
 
 
 def scrub_file(excel_file_path):
-    return popup.start_loading(
+    return start_loading(
         lambda: scrub_excel_file(
             excel_file_path=excel_file_path
         ), 
@@ -83,8 +83,7 @@ def scrub_file(excel_file_path):
     ).result
 
 
-if __name__ == "__main__":
- 
+def main():
     file_path = select_file()
 
     if file_path:
@@ -93,3 +92,7 @@ if __name__ == "__main__":
 
     else:
         print("No file selected. Operation canceled.")
+
+
+if __name__ == "__main__":
+    main()
