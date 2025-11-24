@@ -3,6 +3,9 @@ from tkinter import filedialog
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 
+import popup
+
+
 def scrub_excel_file(excel_file_path):
     # Read the Excel file into a pandas DataFrame
     try:
@@ -59,15 +62,33 @@ def scrub_excel_file(excel_file_path):
     return excel_file_path_scrubbed
 
 
+def select_file():
+    return popup.start_loading(
+        lambda: filedialog.askopenfilename(
+            title = "Select a file",
+            filetypes = [("Excel files", "*.xls?"),]
+        ),
+        title="Working...",
+        text="Please, select a file to scrub..."
+    ).result
+
+
+def scrub_file(excel_file_path):
+    return popup.start_loading(
+        lambda: scrub_excel_file(
+            excel_file_path=excel_file_path
+        ), 
+        title="Scrubbing file...", 
+        text="Please wait, scrubbing..."
+    ).result
+
+
 if __name__ == "__main__":
  
-    file_path = filedialog.askopenfilename(
-        title = "Select a file",
-        filetypes = [("Excel files", "*.xls?"),]
-    )
+    file_path = select_file()
 
     if file_path:
-        scrubbed_file_path = scrub_excel_file(file_path)
+        scrubbed_file_path = scrub_file(file_path)
         print(f"Excel file '{file_path}' has been scrubbed and saved to '{scrubbed_file_path}'.")
 
     else:
