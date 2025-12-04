@@ -1,4 +1,5 @@
 import logging
+from sys import exit
 
 import pandas as pd
 from tkinter import Tk, filedialog
@@ -18,7 +19,7 @@ def scrub_excel_file(excel_file_path):
         df = pd.read_excel(excel_file_path)
     except FileNotFoundError:
         print(f"Error: The file '{excel_file_path}' was not found.")
-        exit()
+        exit(1)
 
     df.columns = df.iloc[3]
     
@@ -107,7 +108,7 @@ def run(root=None):
         root.destroy()
     
     LOGGER.info("Closing scrubber.")
-    exit()
+    exit(0)
 
 
 def main(debug=False):
