@@ -49,9 +49,10 @@ class LoadingPopup:
             self.popup.grab_release()
             self.popup.destroy()
 
-def start_loading(func, title, text):
-    root = tk.Tk()
-    root.withdraw()  # Hide the main window
+def start_loading(func, title, text, root=None):
+    if root is None:
+        root = tk.Tk()
+        root.withdraw()  # Hide the main window
     
     # Create and show loading popup
     loading = LoadingPopup(root, title, text)

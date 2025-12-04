@@ -1,7 +1,7 @@
 import logging
 
 import pandas as pd
-from tkinter import filedialog
+from tkinter import Tk, filedialog
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 
@@ -79,17 +79,17 @@ def select_file():
     ).result
 
 
-def scrub_file(excel_file_path):
+def scrub_file(excel_file_path, root=None):
     return start_loading(
         lambda: scrub_excel_file(
             excel_file_path=excel_file_path
         ), 
         title="Scrubbing file...", 
-        text="Please wait, scrubbing..."
+        text="Please wait, scrubbing...",
+        root=root,
     ).result
 
-
-def main():
+def run(root=None):
     file_path = select_file()
 
     if not file_path:
@@ -97,7 +97,35 @@ def main():
         scrubbed_file_path = None
 
     else:
-        print("No file selected. Operation canceled.")
+        LOGGER.debug(f"File selected: {file_path}")
+        scrubbed_file_path = scrub_file(file_path, root)
+        LOGGER.info(f"Excel file '{file_path}' has been scrubbed and saved to '{scrubbed_file_path}'.")
+    
+    
+    if root and root.winfo_exists():
+        root.grab_release()
+        root.destroy()
+    
+    LOGGER.info("Closing scrubber.")
+    exit()
+
+
+def main(debug=False):
+    if debug:
+        utility.setDebugLogger(LOGGER)
+        LOGGER.debug("Debugging enabled.")
+    
+    LOGGER.info(f"You are using {app.APPNAME}.")
+
+    root = Tk()
+    root.title(app.APPNAME)
+    root.geometry("300x200")
+    
+    root.after(100, run, root)
+    
+    root.mainloop()
+        
+    LOGGER.info("Closing scrubber.")
 
 
 if __name__ == "__main__":
