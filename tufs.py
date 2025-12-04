@@ -1,5 +1,4 @@
-# from theoretical_use_file_scrubber.app import main
-from app import main
+from theoretical_use_file_scrubber.app import main
 import argparse
 
 
