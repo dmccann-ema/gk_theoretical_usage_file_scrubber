@@ -16,6 +16,7 @@ class LoadingPopup:
         self.popup.title(title)
         self.popup.geometry("300x100")
         self.popup.resizable(False, False)
+        self.popup.attributes('-topmost', True)
         
         # Center the popup on screen
         self.popup.update_idletasks()
