@@ -6,7 +6,10 @@ from tkinter import Tk, filedialog
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 
-from theoretical_use_file_scrubber import app
+try:
+    import app
+except ImportError:
+    from theoretical_use_file_scrubber import app
 from . import utility
 from .popup import start_loading
 

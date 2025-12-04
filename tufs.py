@@ -1,4 +1,7 @@
-from theoretical_use_file_scrubber.app import main
+try:
+    from app import main
+except ImportError:
+    from theoretical_use_file_scrubber.app import main
 import argparse
 
 
