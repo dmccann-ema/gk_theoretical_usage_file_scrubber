@@ -1,9 +1,15 @@
+import logging
+
 import pandas as pd
 from tkinter import filedialog
 from openpyxl.styles import Alignment
 from openpyxl.utils import get_column_letter
 
+import app
+from . import utility
 from .popup import start_loading
+
+LOGGER = logging.getLogger()
 
 
 def scrub_excel_file(excel_file_path):
@@ -86,9 +92,9 @@ def scrub_file(excel_file_path):
 def main():
     file_path = select_file()
 
-    if file_path:
-        scrubbed_file_path = scrub_file(file_path)
-        print(f"Excel file '{file_path}' has been scrubbed and saved to '{scrubbed_file_path}'.")
+    if not file_path:
+        LOGGER.warning("No file selected. Operation canceled.")
+        scrubbed_file_path = None
 
     else:
         print("No file selected. Operation canceled.")
